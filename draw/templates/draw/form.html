@@ -1,0 +1,71 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form - Testing</title>
+    <style>
+
+    </style>
+
+</head>
+<body>
+    <!-- <form action="/draw/bigscreen.html">
+        <label for="fname">First name:</label><br>
+        <input type="text" id="fname" name="fname" value="John"><br>
+        <label for="lname">Last name:</label><br>
+        <input type="text" id="lname" name="lname" value="Doe"><br><br>
+        <input type="submit" value="Submit">
+      </form> -->
+    
+      <!-- <form onsubmit="myFunction()">
+        Enter name: <input type="text">
+        <input type="submit">
+      </form> -->
+
+      <!-- <form id="theform">
+        <input type="text" id="searchTerm" />
+        <input type="submit" value="Submit" id="submitButton" />
+      </form> -->
+
+      <form onsubmit="selectDay()" class="mb-4">
+        <div class="form-group">
+          <label for="msg"><h3>Day</h3></label>
+          <div class="form-group">
+            <label for="textOption">What day are you free to work?</label>
+            <select class="form-control" id="textOption">
+              <option value=1>Sunday</option>
+              <option value=2>Monday</option>
+              <option value=3>Tuesday</option>
+            </select>
+          </div>
+          <textarea class="form-control" id="msg" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-secondary mb-2">Submit</button>
+      </form>
+      
+    
+
+</body>
+<script>
+// document.getElementById('theform').onsubmit = function() { 
+// 	console.log(document.getElementById('searchTerm').value);
+//   return false;
+// };
+
+// function myFunction() {
+//     var x = document.getElementById('text');
+//     x.style.color = "red";
+// }
+
+function submitText() {
+    var text = {
+      "type": "text",
+      "text": document.getElementById("msg").value,
+      "option": document.getElementById("textOption").value
+    };
+    socket.send(JSON.stringify(text));
+  }
+
+</script>
+</html>
