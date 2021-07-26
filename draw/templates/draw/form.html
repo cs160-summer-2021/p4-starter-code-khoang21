@@ -3,69 +3,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Form - Testing</title>
-    <style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>P4 Drawing</title>
 
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'draw/style.css' %}" />
+
+    <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
 
 </head>
-<body>
-    <!-- <form action="/draw/bigscreen.html">
-        <label for="fname">First name:</label><br>
-        <input type="text" id="fname" name="fname" value="John"><br>
-        <label for="lname">Last name:</label><br>
-        <input type="text" id="lname" name="lname" value="Doe"><br><br>
-        <input type="submit" value="Submit">
-      </form> -->
-    
-      <!-- <form onsubmit="myFunction()">
-        Enter name: <input type="text">
-        <input type="submit">
-      </form> -->
 
-      <!-- <form id="theform">
-        <input type="text" id="searchTerm" />
-        <input type="submit" value="Submit" id="submitButton" />
-      </form> -->
+<style>
 
-      <form onsubmit="submitText()" class="mb-4">
-        <div class="form-group">
-          <label for="msg"><h3>Day</h3></label>
-          <div class="form-group">
-            <label for="textOption">What day are you free to work?</label>
-            <select class="form-control" id="textOption">
-              <option value=1>Sunday</option>
-              <option value=2>Monday</option>
-              <option value=3>Tuesday</option>
-            </select>
-          </div>
-          <textarea class="form-control" id="msg" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-secondary mb-2">Submit</button>
-      </form>
-      
-    
+.title {
+  font-size: 100px;
+}
 
+body {
+  background: #ebf4f5;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0;
+  height: 100%;
+}
+
+</style>
+
+<body class="text-center">
+  <h1 class="m-0 p-0 text-center border border-dark rounded" style="background-color: lightblue; font-size: 100px; padding-bottom: 5px">Swift Shift</h1>
+  <form onsubmit="submitText()" class="mb-4" style="padding: 25px; padding-top: 100px">
+    <div class="form-group">
+      <label for="name"><h3 style="font-size: 60px">Enter your position and full name:</h3></label>
+      <h4 style = "font-size:40px"> <i> Ex. Cashier: Alex </i></h4> 
+      <textarea class="form-control" id="msg" rows="1"></textarea>
+      <div class="form-group">
+        <label for="days" style="font-size: 60px">Weekday</label>
+        <select class="form-control" id="days">
+          <option value= "sun">Sunday</option>
+          <option value= "mon">Monday</option>
+          <option value= "tues">Tuesday</option>
+          <option value= "wed">Wednesday</option>
+          <option value= "thu">Thursday</option>
+          <option value= "fri">Friday</option>
+          <option value= "sat">Saturday</option>
+        </select>
+        <label for="hours" style="font-size: 60px">Hours</label>
+        <select class="form-control" id="hours">
+          <option value= "8am">8am - 11am</option>
+          <option value="11am">11am - 2pm</option>
+          <option value="2pm">2pm - 5pm</option>
+          <option value="5pm">5pm - 8pm</option>
+          <option value="8pm">8pm - 11pm</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-secondary mb-2" style="font-size: 30px; background-color: #103783">Submit</button>
+  </form>
 </body>
+
 <script>
-// document.getElementById('theform').onsubmit = function() { 
-// 	console.log(document.getElementById('searchTerm').value);
-//   return false;
-// };
+  var socket = new WebSocket(
+      'ws://' + window.location.host + '/ws/draw');
 
-// function myFunction() {
-//     var x = document.getElementById('text');
-//     x.style.color = "red";
-// }
-
-function submitText() {
+  function submitText() {
     var text = {
       "type": "text",
-      "text": document.getElementById("msg").value,
-      "option": document.getElementById("textOption").value
+      "text": document.getElementById("name").value,
+      "option": document.getElementById("days").value,
+      "option2": document.getElementById("hours").value
     };
     socket.send(JSON.stringify(text));
   }
+
+}
+
+
+  socket.onclose = function(e) {
+      console.error('Chat socket closed unexpectedly');
+  };
 
 </script>
 </html>

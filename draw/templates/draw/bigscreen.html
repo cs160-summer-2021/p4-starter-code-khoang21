@@ -1,14 +1,17 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html class="mx-5 mb-0">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>P4 Drawing</title>
 
-    <title>Schedule Calendar</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'draw/style.css' %}" />
+
+    <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
+
 </head>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400&display=swap');
@@ -52,7 +55,7 @@ h1,h3{
     cursor: pointer;
     box-shadow: grey;
     border-radius: 25px;
-    
+
     background: linear-gradient(180deg, rgba(0, 209, 255, 0.188) 10.42%, rgba(19, 241, 255, 0.188) 38.54%, rgba(71, 219, 210, 0.143514) 66.67%, rgba(205, 255, 246, 0.101833) 84.81%, rgba(0, 0, 0, 0) 100%),
     linear-gradient(0deg, #FFFFFF, #FFFFFF);
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -83,6 +86,11 @@ h1,h3{
 
 
 /* SCHEDULE DESIGN */
+.backgroundcolor{
+  background: linear-gradient(#ebf4f5, #b5c6e0);
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+}
 .schedule__container{
     background: linear-gradient(#ebf4f5, #b5c6e0);
     display: flex;
@@ -115,8 +123,6 @@ h1,h3{
 }
 
 .time{
-    width: 50px;
-    height: 70px;
     color: white;
     background-color: #103783;
     text-align: center;
@@ -135,7 +141,7 @@ h1,h3{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    font-size: auto;
 }
 
 /* Reset Button */
@@ -195,267 +201,238 @@ h1,h3{
     border-radius: 5px;
     cursor: pointer;
 }
+
+
 </style>
-<body>
-    <div class="container">
+<body class = "backgroundcolor">
+  <h1 class="text-center m-4 p-4">Filter By Role</h1>
+  <div class="job__container text-center m-3 p-3">
+    <a href="/draw/manager" class="jobButton">Manager</a>
+    <a href="/draw/busser" class="jobButton">Busser</a>
+    <a href="/draw/cashier" class="jobButton">Cashier</a>
+    <a href="/draw/chef" class="jobButton">Chef</a>
+    <a href="/draw/host" class="jobButton">Host</a>
+    <a href="/draw/server" class="jobButton">Server</a>
+    </div>
+<!--
+    <h3 class = "text-center"> Select your name</h3>
 
-        <h1>Filter by role</h1>
-
-        <div class="job__container">
-
-            <a href="/draw/manager" class="jobButton">Manager</a>
-            <a href="/draw/busser" class="jobButton">Busser</a>
-            <a href="/draw/cashier" class="jobButton">Cashier</a>
-            <a href="/draw/chef" class="jobButton">Chef</a>
-            <a href="/draw/host" class="jobButton">Host</a>
-            <a href="/draw/server" class="jobButton">Server</a>
-<!--  <div class="role__name" id="manager" style="background-color: #f68080">Manager</div>
-            <div class="role__name" id="cashier" style="background-color: #f7f779;">Cashier</div>
-            <div class="role__name" id="chef" style="background-color: #a8dadc">Chef</div>
-            <div class="role__name" id="host" style="background-color: #faae7b">Host</div>
-            <div class="role__name" id="server" style="background-color: #2a9d8f">Server</div>
-            <div class="role__name" id="busser" style="background-color: #bdb2ff">Busser</div> -->
-            <!-- <div class="task__name" id="deselect">Deselect All</div> -->
-
-        </div>
-
-        <h3>Select your name</h3>
-
-        <div class="role__container">
-            <div class="role__name" id="manager" style="background-color: #f68080">Server</div>
-            <div class="role__name" id="cashier" style="background-color: #f7f779;">Server1</div>
-            <div class="role__name" id="chef" style="background-color: #a8dadc">Server2</div>
-            <div class="role__name" id="host" style="background-color: #faae7b">Server3</div>
-            <div class="role__name" id="server" style="background-color: #2a9d8f">Server4</div>
-            <div class="role__name" id="busser" style="background-color: #bdb2ff">Server5</div>
-        </div>
-
-        <div class="schedule__container">
-            <div class="days__container">
-                <span class="title"></span>
-                <div class="day">Sunday</div>
-                <div class="day">Monday</div>
-                <div class="day">Tuesday</div>
-                <div class="day">Wednesday</div>
-                <div class="day">Thursday</div>
-                <div class="day">Friday</div>
-                <div class="day">Saturday</div>
-            </div>
-            <div class="part__day">
-                <span class="time">8am <br> - <br> 12pm</span>
-                <div class="task" id ="sun8am"></div>
-                <div class="task" id ="mon8am"></div>
-                <div class="task" id ="tue8am"></div>
-                <div class="task" id ="wed8am"></div>
-                <div class="task" id ="thu8am"></div>
-                <div class="task" id ="fri8am"></div>
-                <div class="task" id ="sat8am"></div>
-            </div>
-            <div class="part__day">
-                <span class="time">12pm <br> - <br> 2pm</span>
-                <div class="task" id ="sun12pm"></div>
-                <div class="task" id ="mon12pm"></div>
-                <div class="task" id ="tue12pm"></div>
-                <div class="task" id ="wed12pm"></div>
-                <div class="task" id ="thu12pm"></div>
-                <div class="task" id ="fri12pm"></div>
-                <div class="task" id ="sat12pm"></div>
-            </div>
-            <div class="part__day">
-                <span class="time">2pm <br> - <br> 6pm</span>
-                <div class="task" id ="sun2pm"></div>
-                <div class="task" id ="mon2pm"></div>
-                <div class="task" id ="tue2pm"></div>
-                <div class="task" id ="wed2pm"></div>
-                <div class="task" id ="thu2pm"></div>
-                <div class="task" id ="fri2pm"></div>
-                <div class="task" id ="sat2pm"></div>
-            </div>
-            <div class="part__day">
-                <span class="time">6pm <br> - <br> 9pm</span>
-                <div class="task" id ="sun6pm"></div>
-                <div class="task" id ="mon6pm"></div>
-                <div class="task" id ="tue6pm"></div>
-                <div class="task" id ="wed6pm"></div>
-                <div class="task" id ="thu6pm"></div>
-                <div class="task" id ="fri6pm"></div>
-                <div class="task" id ="sat6pm"></div>
-            </div>
-            <div class="part__day">
-                <span class="time">9pm <br> - <br> 11pm</span>
-                <div class="task" id ="sun9pm"></div>
-                <div class="task" id ="mon9pm"></div>
-                <div class="task" id ="tue9pm"></div>
-                <div class="task" id ="wed9pm"></div>
-                <div class="task" id ="thu9pm"></div>
-                <div class="task" id ="fri9pm"></div>
-                <div class="task" id ="sat9pm"></div>
-            </div>
-        </div>
-
-        <button class="deleteBtn">Reset Schedule</button>
-
-        <div class="pop-up__container">
-            <div class="pop-up">
-                <h4>Are you sure you want to delete all the tasks from your schedule?</h4>
-                <div class="btn__container">
-                    <div class="btn__answer" id="btn__yes">YES</div>
-                    <div class="btn__answer" id="btn__no">NO</div>
-                </div>
-            </div>
-        </div>
-
+    <div class="role__container text-center">
+        <div class="role__name" id="manager" style="background-color: #f68080">Server</div>
+        <div class="role__name" id="cashier" style="background-color: #f7f779;">Server1</div>
+        <div class="role__name" id="chef" style="background-color: #a8dadc">Server2</div>
+        <div class="role__name" id="host" style="background-color: #faae7b">Server3</div>
+        <div class="role__name" id="server" style="background-color: #2a9d8f">Server4</div>
+        <div class="role__name" id="busser" style="background-color: #bdb2ff">Server5</div>
+    </div> -->
+  <div class="schedule_container container-flex">
+    <div class="row days__container">
+        <div class="col day">Shifts</div>
+        <div class="col day">Sunday </div>
+        <div class="col day">Monday</div>
+        <div class="col day">Tuesday</div>
+        <div class="col day">Wednesday</div>
+        <div class="col day">Thursday</div>
+        <div class="col day">Friday</div>
+        <div class="col day">Saturday</div>
+    </div>
+    <div class="row days__container">
+        <span class="col time">8am <br> - <br> 11am</span>
+        <div class="col task" id ="sun8am"></div>
+        <div class="col task" id ="mon8am"></div>
+        <div class="col task" id ="tue8am"></div>
+        <div class="col task" id ="wed8am"></div>
+        <div class="col task" id ="thu8am"></div>
+        <div class="col task" id ="fri8am"></div>
+        <div class="col task" id ="sat8am"></div>
     </div>
 
-    <script src="main.js"></script>
+    <div class="row days__container">
+        <span class="col time">11am <br> - <br> 2pm</span>
+        <div class="col task" id ="sun11am"></div>
+        <div class="col task" id ="mon11am"></div>
+        <div class="col task" id ="tue11am"></div>
+        <div class="col task" id ="wed11am"></div>
+        <div class="col task" id ="thu11am"></div>
+        <div class="col task" id ="fri11am"></div>
+        <div class="col task" id ="sat11am"></div>
+    </div>
+
+    <div class="row days__container">
+        <span class="col time">2pm <br> - <br> 5pm</span>
+        <div class="col task" id ="sun2pm"></div>
+        <div class="col task" id ="mon2pm"></div>
+        <div class="col task" id ="tues2pm"></div>
+        <div class="col task" id ="wed2pm"></div>
+        <div class="col task" id ="thu2pm"></div>
+        <div class="col task" id ="fri2pm"></div>
+        <div class="col task" id ="sat2pm"></div>
+    </div>
+
+    <div class="row days__container">
+        <span class="col time">5pm <br> - <br> 8pm</span>
+        <div class="col task" id ="sun5pm"></div>
+        <div class="col task" id ="mon5pm"></div>
+        <div class="col task" id ="tues5pm"></div>
+        <div class="col task" id ="wed8am"></div>
+        <div class="col task" id ="thu8am"></div>
+        <div class="col task" id ="fri8am"></div>
+        <div class="col task" id ="sat8am"></div>
+    </div>
+
+    <div class="row days__container">
+        <span class="col time">8pm <br> - <br> 11pm</span>
+        <div class="col task" id ="sun8pm"></div>
+        <div class="col task" id ="mon8pm"></div>
+        <div class="col task" id ="tue8pm"></div>
+        <div class="col task" id ="wed8pm"></div>
+        <div class="col task" id ="thu8pm"></div>
+        <div class="col task" id ="fri8pm"></div>
+        <div class="col task" id ="sat8pm"></div>
+    </div>
+  </div>
 </body>
-
 <script>
-    const managerTask = document.getElementById('manager');
-const busser = document.getElementById('busser');
-const cashierTask = document.getElementById('cashier');
-const chefTask = document.getElementById('chef');
-const hostTask = document.getElementById('host');
-const serverTask = document.getElementById('server');
-// const deselectBtn = document.getElementById('deselect');
-const taskContainer = document.querySelector('.role__container');
-const scheduleContainer = document.querySelector('.schedule__container');
-const resetBtn = document.querySelector('.deleteBtn');
-const popUp = document.querySelector('.pop-up__container');
-const noBtn = document.getElementById('btn__no');
-const yesBtn = document.getElementById('btn__yes');
 
-let selectedColor, active;
 
-//Event Listeners
-taskContainer.addEventListener('click', selectTask);
-scheduleContainer.addEventListener('click', setColors);
-deselectBtn.addEventListener('click', resetTasks);
-resetBtn.addEventListener('click',openPopup);
-noBtn.addEventListener('click', closePopup);
-yesBtn.addEventListener('click', deleteTasks);
-
-// Tasks click  (3)
-function selectTask (e){
-    resetTasks()
-
-    taskColor = e.target.style.backgroundColor;
-
-    switch(e.target.id){
-        case 'manager':
-            activeTask(managerTask, taskColor);
-            icon = '<i class="fas fa-clipboard"></i>';
-            break
-        case 'cashier':
-            activeTask(cashierTask, taskColor);
-            icon = '<i class="fas fa-cash-register"></i>';
-            break
-        case 'busser':
-            activeTask(busserTask, taskColor);
-            icon = '<i class="fas fa-broom"></i>';
-            break
-        case 'chef':
-            activeTask(chefTask, taskColor);
-            icon = '<i class="fas fa-utensils"></i>';
-            break
-        case 'server':
-            activeTask(serverTask, taskColor);
-            icon = '<i class="fas fa-user-tie"></i>';
-            break
-        case 'host':
-            activeTask(hostTask, taskColor);
-            icon = '<i class="fas fa-phone"></i>';
-            break
-    }
-
-};
-
-// Set colors for schedule (4)
-function setColors (e){
-    if(e.target.classList.contains('task') && active === true){
-        e.target.style.backgroundColor = selectedColor;
-        e.target.innerHTML = icon;
-    }else if(e.target.classList.contains('fas') && active === true){
-        e.target.parentElement.style.backgroundColor = selectedColor;
-        e.target.parentElement.innerHTML = icon;
-    }
-};
-
-// Active task (1)
-function activeTask(task, color){
-    task.classList.toggle('selected');
-
-    if(task.classList.contains('selected')){
-        active = true;
-        selectedColor = color;
-        return selectedColor;
-    } else {
-        active = false;
-    }
-}
-
-// Reset tasks (2)
-function resetTasks(){
-    const allTasks = document.querySelectorAll('.role__name');
-
-    allTasks.forEach((item)=>{
-        item.className = 'role_name';
-    })
-}
-
-// Delete tasks
-function deleteTasks(){
-    const tasks = document.querySelectorAll('.task');
-
-    tasks.forEach((item)=>{
-        item.innerHTML = '';
-        item.style.backgroundColor = 'white';
-    })
-
-    closePopup();
-}
-
-// Open Pop-up
-function openPopup(){
-    popUp.style.display = 'flex';
-}
-
-// Close Pop-up
-function closePopup(){
-    popUp.style.display = 'none';
-}
-
-// Websocket
-var socket = new WebSocket(
+//THEIRS
+  var socket = new WebSocket(
       'ws://' + window.location.host + '/ws/draw');
-  
-  //receive
+
+  //is called everytime message is received
   socket.onmessage = function(receivedMessage) {
     console.log(receivedMessage)
     var received = JSON.parse(receivedMessage.data);
     console.log(received);
-    
+
     console.log("socket receiving");
 
     if (received.type == "text") {
-        var sticky_note = document.createElement("div");
-        sticky_note.classList.add("sticky-note");
+        var worker = document.createElement("div");
+        worker.classList.add("worker");
         var message = document.createTextNode(received.text);
-        sticky_note.appendChild(message);
+        worker.appendChild(message);
         var element;
-        if (received.option == 1) {
+        if (received.option == "sun") {
+          if (received.option2 == "8am") {
             element = document.getElementById("sun8am");
-        } else if (received.option == 2) {
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("sun11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("sun2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("sun5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("sun8pm");
+          }
+        } else if (received.option == "mon") {
+          if (received.option2 == "8am") {
             element = document.getElementById("mon8am");
-        } else {
-            element = document.getElementById("tue8am");
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("mon11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("mon2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("mon5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("mon8pm");
+          }
+        } else if (received.option == "tues") {
+          if (received.option2 == "8am") {
+            element = document.getElementById("tues8am");
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("tues11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("tues2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("tues5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("tues8pm");
+          }
+        } else if (received.option == "wed") {
+          if (received.option2 == "8am") {
+            element = document.getElementById("wed8am");
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("wed11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("wed2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("wed5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("wed8pm");
+          }
+        } else if (received.option == "thu") {
+          if (received.option2 == "8am") {
+            element = document.getElementById("thu8am");
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("thu11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("thu2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("thu5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("thu8pm");
+          }
+        } else if (received.option == "fri") {
+          if (received.option2 == "8am") {
+            element = document.getElementById("fri8am");
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("fri11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("fri2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("fri5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("fri8pm");
+          }
+        } else if (received.option == "sat") {
+          if (received.option2 == "8am") {
+            element = document.getElementById("sat8am");
+          }
+          if (received.option2 == "11am") {
+            element = document.getElementById("sat11am");
+          }
+          if (received.option2 == "2pm") {
+            element = document.getElementById("sat2pm");
+          }
+          if (received.option2 == "5pm") {
+            element = document.getElementById("sat5pm");
+          }
+          if (received.option2 == "8pm") {
+            element = document.getElementById("sat8pm");
+          }
         }
-        element.appendChild(sticky_note);
+        element.appendChild(worker);
     }
   }
 
   socket.onclose = function(e) {
       console.error('Chat socket closed unexpectedly');
   };
+
 </script>
 </html>
